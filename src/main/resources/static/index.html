@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Generator</title>
+</head>
+<body>
+<h1>Get your hashed password here</h1>
+<form action="">
+    <label for="password">
+        <input id="password" type="text">
+    </label>
+    <button id="submitButton">Submit</button>
+</form>
+<h3 id="output"></h3>
+<script>
+    var button = document.getElementById("submitButton");
+    var passwordInput = document.getElementById("password");
+    var output = document.getElementById("output");
+    button.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        var body = {
+            name: passwordInput.value
+        };
+        fetch("http://localhost:8080/gethashedpassword", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: body
+        }).then(function (res) {
+            return res.json()
+        }).then(function (data) {
+            output.innerText = data.hash;
+        }).catch(function (error) {
+            console.log(error)
+        })
+    })
+</script>
+</body>
+</html>
